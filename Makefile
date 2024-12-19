@@ -20,7 +20,7 @@ clean:
 	rm -rf node_modules/
 
 unlink:
-	cd ~/.n8n/nodes/ &&	npm unlink @telepilotco/n8n-nodes-telepilot
+	cd ~/.n8n/custom/ &&	npm unlink @elvis_vg/n8n-nodes-telepilot
 link:
 	npm link
-	cd ~/.n8n/ && mkdir -p nodes && cd nodes && npm link @telepilotco/n8n-nodes-telepilot
+	cd ~/.n8n/ && mkdir -p custom && cd custom && npm link @elvis_vg/n8n-nodes-telepilot

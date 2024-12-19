@@ -4,7 +4,7 @@ import {
 	IDataObject,
 	INodeType,
 	INodeTypeDescription, ITriggerFunctions, ITriggerResponse,
-} from 'n8n-workflow';
+	} from 'n8n-workflow';
 
 const debug = require('debug')('telepilot-trigger')
 

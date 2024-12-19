@@ -61,8 +61,17 @@ export class TelePilotNodeConnectionManager {
 	private clientSessions: Record<number, ClientSession> = {};
 	private tdlConfigured: boolean = false;
 
-	private TD_DATABASE_PATH_PREFIX = process.env.HOME + "/.n8n/nodes/node_modules/@telepilotco/n8n-nodes-telepilot/db"
-	private TD_FILES_PATH_PREFIX = process.env.HOME + "/.n8n/nodes/node_modules/@telepilotco/n8n-nodes-telepilot/db"
+	// default connection
+	// private TD_DATABASE_PATH_PREFIX = process.env.HOME + "/.n8n/nodes/node_modules/@telepilotco/n8n-nodes-telepilot/db"
+	// private TD_FILES_PATH_PREFIX = process.env.HOME + "/.n8n/nodes/node_modules/@telepilotco/n8n-nodes-telepilot/db"
+
+	// updated connection
+	private TD_DATABASE_PATH_PREFIX = process.env.HOME + "/.n8n/nodes/node_modules/@elvis_vg/n8n-nodes-telepilot/db"
+	private TD_FILES_PATH_PREFIX = process.env.HOME + "/.n8n/nodes/node_modules/@elvis_vg/n8n-nodes-telepilot/db"
+
+	// npm local dev path
+	// private TD_DATABASE_PATH_PREFIX = process.env.HOME + "/.n8n/custom/node_modules/@elvis_vg/n8n-nodes-telepilot/db"
+	// private TD_FILES_PATH_PREFIX = process.env.HOME + "/.n8n/custom/node_modules/@elvis_vg/n8n-nodes-telepilot/db"
 
 
 	constructor() {
@@ -231,7 +240,10 @@ export class TelePilotNodeConnectionManager {
 		let _lib_prebuilt_package = "tdlib-binaries-prebuilt/prebuilds/";
 
 		let libFile = "";
+		// npm installed path
 		const libFolder = __dirname + "/../../../../" + _lib_prebuilt_package;
+		// npm local dev path
+		// const libFolder = __dirname + "/../../../node_modules/@telepilotco/" + _lib_prebuilt_package;
 
 		if (process.arch === "x64") {
 			switch (process.platform) {

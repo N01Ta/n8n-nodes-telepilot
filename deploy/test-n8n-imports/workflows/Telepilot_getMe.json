@@ -19,7 +19,7 @@
       },
       "id": "de0be3ef-35c3-45af-8fc1-c97c74b1f26e",
       "name": "Telegram CoPilot",
-      "type": "@telepilotco/n8n-nodes-telepilot.telePilot",
+      "type": "@elvis_vg/n8n-nodes-telepilot.telePilot",
       "typeVersion": 1,
       "position": [
         1420,

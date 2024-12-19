@@ -1,7 +1,7 @@
 {
-  "name": "@telepilotco/n8n-nodes-telepilot",
-  "version": "0.4.0",
-  "description": "Your personal Telegram CoPilot",
+  "name": "@elvis_vg/n8n-nodes-telepilot",
+  "version": "0.4.1",
+  "description": "Your personal Telegram CoPilot. (Supporting sending files, images, audio)",
   "keywords": [
     "telepilot.co",
     "telepilot",
@@ -15,7 +15,7 @@
     "dist",
     "deploy/test-n8n-imports"
   ],
-  "license": "CC BY-NC-ND",
+  "license": "MIT",
   "homepage": "https://telepilot.co/",
   "author": {
     "name": "TelePilot",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/telepilotco/n8n-nodes-telepilot.git"
+    "url": "https://github.com/el-vis/n8n-nodes-telepilot.git"
   },
   "main": "index.js",
   "scripts": {
@@ -49,10 +49,9 @@
     "@types/node": "^14.14.6",
     "@types/request-promise-native": "~1.0.15",
     "@typescript-eslint/parser": "~5.45",
-    "eslint-plugin-n8n-nodes-base": "^1.11.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.3",
     "gulp": "^4.0.2",
-    "n8n-core": "^1.19.5",
-    "n8n-workflow": "^1.19.5",
+    "n8n-workflow": "^1.50.0",
     "prettier": "^2.7.1",
     "typescript": "~4.8.4"
   },
@@ -61,5 +60,11 @@
     "@telepilotco/tdlib-binaries-prebuilt": "^1.8.14",
     "debug": "^4.3.4",
     "typedi": "^0.10.0"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

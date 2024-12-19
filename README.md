@@ -1,3 +1,7 @@
+# This Fork features
+
+Added methods to send documents (files), video, audio 
+
 # n8n-nodes-telepilot
 
 [![npm version](https://badge.fury.io/js/@telepilotco%2Fn8n-nodes-telepilot.svg)](https://www.npmjs.com/package/@telepilotco/n8n-nodes-telepilot)

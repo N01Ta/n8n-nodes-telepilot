@@ -5,10 +5,14 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
-	NodeOperationError
+	NodeOperationError,
 } from 'n8n-workflow';
-import {Container} from 'typedi';
-import {sleep, TelePilotNodeConnectionManager, TelepilotAuthState} from './TelePilotNodeConnectionManager';
+import { Container } from 'typedi';
+import {
+	sleep,
+	TelepilotAuthState,
+	TelePilotNodeConnectionManager,
+} from './TelePilotNodeConnectionManager';
 
 import {
 	operationChat,
@@ -22,12 +26,14 @@ import {
 	variable_chat_action,
 	variable_chat_id,
 	variable_description,
+	variable_file_caption,
 	variable_file_id,
 	variable_force,
 	variable_from_chat_id,
 	variable_from_message_id,
 	variable_is_channel,
 	variable_is_marked_as_unread,
+	variable_local_file_path,
 	variable_message_id,
 	variable_message_ids,
 	variable_messageText,
@@ -40,9 +46,7 @@ import {
 	variable_user_id,
 	variable_user_ids,
 	variable_username,
-	variable_local_file_path,
-	variable_photo_caption
-} from './common.descriptions'
+} from './common.descriptions';
 
 const debug = require('debug')('telepilot-node');
 
@@ -91,7 +95,7 @@ export class TelePilot implements INodeType {
 			variable_message_id,
 			variable_messageText,
 			variable_local_file_path,
-			variable_photo_caption,
+			variable_file_caption,
 			variable_revoke,
 			variable_username,
 			variable_query,
@@ -520,11 +524,11 @@ export class TelePilot implements INodeType {
 				} else if (operation === 'sendMessagePhoto') {
 					const chat_id = this.getNodeParameter('chat_id', 0) as string;
 					const localFilePath = this.getNodeParameter('localFilePath', 0) as string;
-					let photoCaption: string | null = this.getNodeParameter('photoCaption', 0) as string;
+					let caption: string | null = this.getNodeParameter('attachmentCaption', 0) as string;
 					const reply_to_msg_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
 
-					if (photoCaption === '' && photoCaption.length == 0) {
-						photoCaption = null;
+					if (caption === '' && caption.length == 0) {
+						caption = null;
 					}
 					const result = await client.invoke({
 						_: 'sendMessage',
@@ -538,7 +542,86 @@ export class TelePilot implements INodeType {
 							},
 							caption: {
 								_: 'formattedText',
-								text: photoCaption,
+								text: caption,
+							},
+						},
+					});
+					returnData.push(result);
+				} else if (operation === 'sendMessageDocument') {
+					const chat_id = this.getNodeParameter('chat_id', 0) as string;
+					const localFilePath = this.getNodeParameter('localFilePath', 0) as string;
+					let caption: string | null = this.getNodeParameter('attachmentCaption', 0) as string;
+					const reply_to_msg_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
+
+					if (caption === '' && caption.length == 0) {
+						caption = null;
+					}
+					const result = await client.invoke({
+						_: 'sendMessage',
+						chat_id,
+						reply_to_msg_id,
+						input_message_content: {
+							_: 'inputMessageDocument',
+							document: {
+								_: 'inputFileLocal',
+								path: localFilePath,
+							},
+							caption: {
+								_: 'formattedText',
+								text: caption,
+							},
+						},
+					});
+					returnData.push(result);
+				} else if (operation === 'sendMessageVideo') {
+					const chat_id = this.getNodeParameter('chat_id', 0) as string;
+					const localFilePath = this.getNodeParameter('localFilePath', 0) as string;
+					let caption: string | null = this.getNodeParameter('attachmentCaption', 0) as string;
+					const reply_to_msg_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
+
+					if (caption === '' && caption.length == 0) {
+						caption = null;
+					}
+					const result = await client.invoke({
+						_: 'sendMessage',
+						chat_id,
+						reply_to_msg_id,
+						input_message_content: {
+							_: 'inputMessageVideo',
+							video: {
+								_: 'inputFileLocal',
+								path: localFilePath,
+							},
+							caption: {
+								_: 'formattedText',
+								text: caption,
+							},
+						},
+					});
+					returnData.push(result);
+				}
+				else if (operation === 'sendMessageAudio') {
+					const chat_id = this.getNodeParameter('chat_id', 0) as string;
+					const localFilePath = this.getNodeParameter('localFilePath', 0) as string;
+					let caption: string | null = this.getNodeParameter('attachmentCaption', 0) as string;
+					const reply_to_msg_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
+
+					if (caption === '' && caption.length == 0) {
+						caption = null;
+					}
+					const result = await client.invoke({
+						_: 'sendMessage',
+						chat_id,
+						reply_to_msg_id,
+						input_message_content: {
+							_: 'inputMessageAudio',
+							audio: {
+								_: 'inputFileLocal',
+								path: localFilePath,
+							},
+							caption: {
+								_: 'formattedText',
+								text: caption,
 							},
 						},
 					});

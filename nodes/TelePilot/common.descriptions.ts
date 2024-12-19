@@ -309,9 +309,24 @@ export const operationMessage: INodeProperties = {
 			action: 'Get message',
 		},
 		{
+			name: 'Send Message with Audio',
+			value: 'sendMessageAudio',
+			action: 'Send message with audio',
+		},
+		{
+			name: 'Send Message with Document',
+			value: 'sendMessageDocument',
+			action: 'Send message with document',
+		},
+		{
 			name: 'Send Message with Photo',
 			value: 'sendMessagePhoto',
 			action: 'Send message with photo',
+		},
+		{
+			name: 'Send Message with Video',
+			value: 'sendMessageVideo',
+			action: 'Send message with video',
 		},
 		{
 			name: 'Send Text Message',
@@ -395,6 +410,9 @@ export const variable_chat_id: INodeProperties = {
 			'getChatHistory',
 			'sendMessage',
 			'sendMessagePhoto',
+			'sendMessageVideo',
+			'sendMessageAudio',
+			'sendMessageDocument',
 			'deleteMessages',
 			'forwardMessages',
 			'toggleChatIsMarkedAsUnread',
@@ -508,33 +526,33 @@ default: '',
 };
 
 export const variable_local_file_path: INodeProperties = {
-	displayName: 'Message Photo',
+	displayName: 'Message File (Photo, Video, Document)',
 	name: 'localFilePath',
 	type: 'string',
 	required: true,
 	displayOptions: {
 		show: {
-			operation: ['sendMessagePhoto'],
+			operation: ['sendMessagePhoto', 'sendMessageVideo', 'sendMessageAudio', 'sendMessageDocument'],
 			resource: ['message'],
 		},
 	},
 	default: '',
-	placeholder: '/tmp/my-pic.png',
+	placeholder: '/tmp/my-file',
 	description: 'Local path to the file',
 };
 
-export const variable_photo_caption: INodeProperties = {
-	displayName: 'Photo Caption',
-	name: 'photoCaption',
+export const variable_file_caption: INodeProperties = {
+	displayName: 'Caption',
+	name: 'attachmentCaption',
 	type: 'string',
 	displayOptions: {
 		show: {
-			operation: ['sendMessagePhoto'],
+			operation: ['sendMessagePhoto', 'sendMessageVideo', 'sendMessageAudio', 'sendMessageDocument'],
 			resource: ['message'],
 		},
 	},
 	default: '',
-	placeholder: 'My best photo',
+	placeholder: 'My best (photo, video, audio, document)',
 };
 export const variable_revoke: INodeProperties = {
 	displayName: 'Delete for All Users?',
@@ -619,7 +637,7 @@ export const variable_reply_to_msg_id: INodeProperties = {
 	type: 'string',
 	displayOptions: {
 		show: {
-			operation: ['sendMessage', 'sendMessagePhoto'],
+			operation: ['sendMessage', 'sendMessagePhoto', 'sendMessageVideo', 'sendMessageAudio', 'sendMessageDocument'],
 			resource: ['message'],
 		},
 	},
