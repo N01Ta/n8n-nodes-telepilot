@@ -241,9 +241,9 @@ export class TelePilotNodeConnectionManager {
 
 		let libFile = "";
 		// npm installed path
-		const libFolder = __dirname + "/../../../../" + _lib_prebuilt_package;
-		// npm local dev path
-		// const libFolder = __dirname + "/../../../node_modules/@telepilotco/" + _lib_prebuilt_package;
+		// const libFolder = __dirname + "/../../../../" + _lib_prebuilt_package;
+
+		const libFolder = __dirname + "/../../../../../@telepilotco/" + _lib_prebuilt_package;
 
 		if (process.arch === "x64") {
 			switch (process.platform) {
