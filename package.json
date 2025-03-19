@@ -1,6 +1,6 @@
 {
   "name": "@elvis_vg/n8n-nodes-telepilot",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Your personal Telegram CoPilot. (Supporting sending files, images, audio)",
   "keywords": [
     "telepilot.co",

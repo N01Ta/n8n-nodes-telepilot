@@ -36,6 +36,10 @@ export const optionResources: INodeProperties = {
 		value: 'message',
 	},
 	{
+		name: 'Request',
+		value: 'request',
+	},
+	{
 		name: 'User',
 		value: 'user',
 	},
@@ -159,11 +163,33 @@ export const operationContact: INodeProperties = {
 			name: 'Get Contacts',
 			value: 'getContacts',
 			action: 'Get all user contacts',
-		},
+		}
 	],
 default: 'getContacts',
 	noDataExpression: true,
 };
+
+//Custom action
+export const operationCustom: INodeProperties = {
+	displayName: 'Operation',
+	name: 'operation',
+	type: 'options',
+	displayOptions: {
+		show: {
+			resource: ['request'],
+		},
+	},
+	options: [
+		{
+			name: 'Custom Request',
+			value: 'customRequest',
+			action: 'Make custom request',
+		}
+	],
+	default: 'customRequest',
+	noDataExpression: true,
+};
+
 
 //Operations group
 export const operationGroup: INodeProperties = {
@@ -772,4 +798,17 @@ export const variable_chat_action: INodeProperties = {
 	],
 	default: 'chatActionTyping',
 	description: 'The action description',
+};
+
+export const variable_json: INodeProperties = {
+	displayName: 'Request (JSON)',
+	name: 'request_json',
+	type: 'json',
+	displayOptions: {
+		show: {
+			operation: ['customRequest'],
+			resource: ['request'],
+		},
+	},
+	default: '',
 };

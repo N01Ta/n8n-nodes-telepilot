@@ -17,6 +17,7 @@ import {
 import {
 	operationChat,
 	operationContact,
+	operationCustom,
 	operationFile,
 	operationGroup,
 	operationLogin,
@@ -33,6 +34,7 @@ import {
 	variable_from_message_id,
 	variable_is_channel,
 	variable_is_marked_as_unread,
+	variable_json,
 	variable_local_file_path,
 	variable_message_id,
 	variable_message_ids,
@@ -79,6 +81,7 @@ export class TelePilot implements INodeType {
 			operationChat,
 			operationMessage,
 			operationFile,
+			operationCustom,
 
 			//Variables
 			//User
@@ -111,7 +114,10 @@ export class TelePilot implements INodeType {
 			variable_reply_to_msg_id,
 
 			//Variables Group
-			variable_supergroup_id
+			variable_supergroup_id,
+
+			//Variables JSON
+			variable_json
 		],
 	};
 	// The execute method will go here
@@ -507,11 +513,12 @@ export class TelePilot implements INodeType {
 				} else if (operation === 'sendMessage') {
 					const chat_id = this.getNodeParameter('chat_id', 0) as string;
 					const messageText = this.getNodeParameter('messageText', 0) as string;
-					const reply_to_msg_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
+					const reply_to_message_id = this.getNodeParameter('reply_to_msg_id', 0) as number;
+
 					const result = await client.invoke({
 						_: 'sendMessage',
 						chat_id,
-						reply_to_msg_id,
+						reply_to_message_id,
 						input_message_content: {
 							_: 'inputMessageText',
 							text: {
@@ -525,7 +532,7 @@ export class TelePilot implements INodeType {
 					const chat_id = this.getNodeParameter('chat_id', 0) as string;
 					const localFilePath = this.getNodeParameter('localFilePath', 0) as string;
 					let caption: string | null = this.getNodeParameter('attachmentCaption', 0) as string;
-					const reply_to_msg_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
+					const reply_to_message_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
 
 					if (caption === '' && caption.length == 0) {
 						caption = null;
@@ -533,7 +540,7 @@ export class TelePilot implements INodeType {
 					const result = await client.invoke({
 						_: 'sendMessage',
 						chat_id,
-						reply_to_msg_id,
+						reply_to_message_id,
 						input_message_content: {
 							_: 'inputMessagePhoto',
 							photo: {
@@ -551,7 +558,7 @@ export class TelePilot implements INodeType {
 					const chat_id = this.getNodeParameter('chat_id', 0) as string;
 					const localFilePath = this.getNodeParameter('localFilePath', 0) as string;
 					let caption: string | null = this.getNodeParameter('attachmentCaption', 0) as string;
-					const reply_to_msg_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
+					const reply_to_message_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
 
 					if (caption === '' && caption.length == 0) {
 						caption = null;
@@ -559,7 +566,7 @@ export class TelePilot implements INodeType {
 					const result = await client.invoke({
 						_: 'sendMessage',
 						chat_id,
-						reply_to_msg_id,
+						reply_to_message_id,
 						input_message_content: {
 							_: 'inputMessageDocument',
 							document: {
@@ -577,7 +584,7 @@ export class TelePilot implements INodeType {
 					const chat_id = this.getNodeParameter('chat_id', 0) as string;
 					const localFilePath = this.getNodeParameter('localFilePath', 0) as string;
 					let caption: string | null = this.getNodeParameter('attachmentCaption', 0) as string;
-					const reply_to_msg_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
+					const reply_to_message_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
 
 					if (caption === '' && caption.length == 0) {
 						caption = null;
@@ -585,7 +592,7 @@ export class TelePilot implements INodeType {
 					const result = await client.invoke({
 						_: 'sendMessage',
 						chat_id,
-						reply_to_msg_id,
+						reply_to_message_id,
 						input_message_content: {
 							_: 'inputMessageVideo',
 							video: {
@@ -604,7 +611,7 @@ export class TelePilot implements INodeType {
 					const chat_id = this.getNodeParameter('chat_id', 0) as string;
 					const localFilePath = this.getNodeParameter('localFilePath', 0) as string;
 					let caption: string | null = this.getNodeParameter('attachmentCaption', 0) as string;
-					const reply_to_msg_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
+					const reply_to_message_id = this.getNodeParameter('reply_to_msg_id', 0) as string;
 
 					if (caption === '' && caption.length == 0) {
 						caption = null;
@@ -612,7 +619,7 @@ export class TelePilot implements INodeType {
 					const result = await client.invoke({
 						_: 'sendMessage',
 						chat_id,
-						reply_to_msg_id,
+						reply_to_message_id,
 						input_message_content: {
 							_: 'inputMessageAudio',
 							audio: {
@@ -696,7 +703,17 @@ export class TelePilot implements INodeType {
 					});
 					returnData.push(result);
 				}
+			} else if(resource === 'request') {
+				if (operation === 'customRequest') {
+					const jsonString = this.getNodeParameter('request_json', 0)  as string;
+					const obj = JSON.parse(jsonString)
+					debug(`Request JSON is : ${jsonString}`);
+					result = await client.invoke(obj);
+					returnData.push(result);
+				}
 			}
+
+
 		} catch (e) {
 			if (e.message === "A closed client cannot be reused, create a new Client") {
 				cM.markClientAsClosed(credentials?.apiId as number);
