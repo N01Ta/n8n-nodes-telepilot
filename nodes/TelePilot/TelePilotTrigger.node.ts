@@ -9,7 +9,7 @@ import {
 const debug = require('debug')('telepilot-trigger')
 
 import {TelePilotNodeConnectionManager, TelepilotAuthState} from "./TelePilotNodeConnectionManager";
-import { TDLibUpdateEvents } from './tdlib/updateEvents';
+import { TDLibUpdateEvents, TDLibUpdate } from './tdlib/updateEvents';
 import {Client} from "@telepilotco/tdl";
 
 
@@ -47,7 +47,23 @@ export class TelePilotTrigger implements INodeType {
 				],
 				default: ['updateNewMessage', 'updateMessageContent'],
 			},
-		],
+			{
+				displayName: 'Options',
+				name: 'options',
+				type: 'collection',
+				placeholder: 'Add option',
+				default: {},
+				options: [
+					{
+						displayName: 'Ignore Groups Events',
+						description: 'Whether to ignore events for negative chat_ids',
+						name: 'ignoreGroups',
+						type: 'boolean',
+						default: false,
+					}
+				]
+			}
+		]
 	};
 	// The execute method will go here
 
@@ -74,14 +90,24 @@ export class TelePilotTrigger implements INodeType {
 		client = clientSession.client;
 
 		const updateEventsArray = this.getNodeParameter('events', '') as string;
+		const options = this.getNodeParameter('options', {}) as {
+			ignoreGroups: boolean;
+		}
 
 		const _emit = (data: IDataObject) => {
 			this.emit([this.helpers.returnJsonArray([data])]);
 		}
 
-		const _listener = (update: IDataObject) => {
+		const _listener = (update: IDataObject | TDLibUpdate) => {
 			const incomingEvent = update._ as string;
 			if (updateEventsArray.includes(incomingEvent) || updateEventsArray.length == 0) {
+				if(options.ignoreGroups) {
+					const msg = update?.message;
+					const chatId = (typeof msg === 'object' && msg !== null && 'chat_id' in msg) ? msg.chat_id : undefined;
+					if (typeof chatId === 'number' && chatId < 0) {
+						return;
+					}
+				}
 				debug('Got update: ' + JSON.stringify(update, null, 2));
 				_emit(update);
 			}

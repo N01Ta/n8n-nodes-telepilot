@@ -1,6 +1,8 @@
 # This Fork features
 
-Added methods to send documents (files), video, audio 
+Added methods to send documents (files), video, audio
+Implemented continueOnFail for main node
+Added Ignore Groups Events for Trigger
 
 # n8n-nodes-telepilot
 

@@ -717,12 +717,22 @@ export class TelePilot implements INodeType {
 		} catch (e) {
 			if (e.message === "A closed client cannot be reused, create a new Client") {
 				cM.markClientAsClosed(credentials?.apiId as number);
-				throw new Error("Session was closed or terminated. Please login again: https://telepilot.co/login-howto") as NodeOperationError
+				if (this.continueOnFail())
+					returnData.push({ json: { message: e.message, error: e } });
+				else
+					throw new Error("Session was closed or terminated. Please login again: https://telepilot.co/login-howto") as NodeOperationError
 			} else 	if (e.message === "Unauthorized") {
 				cM.markClientAsClosed(credentials?.apiId as number);
-				throw new Error("Please login: https://telepilot.co/login-howto") as NodeOperationError
+				if (this.continueOnFail())
+					returnData.push({ json: { message: e.message, error: e } });
+				 else
+					throw new Error("Please login: https://telepilot.co/login-howto") as NodeOperationError
+
 			} else {
-				throw(e as NodeOperationError);
+				if (this.continueOnFail())
+					returnData.push({ json: { message: e.message, error: e } });
+				else
+					throw(e as NodeOperationError);
 			}
 		}
 		// debug('finished execution, length=' + JSON.stringify(result).length)
