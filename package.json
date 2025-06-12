@@ -1,5 +1,5 @@
 {
-  "name": "@elvis_vg/n8n-nodes-telepilot",
+  "name": "@elvis_vg@N01Ta/n8n-nodes-telepilot",
   "version": "0.4.6",
   "description": "Your personal Telegram CoPilot. (Supporting sending files, images, audio)",
   "keywords": [
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/el-vis/n8n-nodes-telepilot.git"
+    "url": "https://github.com/N01Tas/n8n-nodes-telepilot.git"
   },
   "main": "index.js",
   "scripts": {
